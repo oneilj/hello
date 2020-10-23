@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { withRouter } from 'react-router-dom';
+
 class Login extends React.Component {
   constructor() {
     super();
@@ -9,15 +10,17 @@ class Login extends React.Component {
       password: ''
     };
   }
+
   handleUsername(event) {
     this.setState({ username: event.target.value })
   }
+
   handlePassword(event) {
     this.setState({ password: event.target.value })
   }
+
   handleSubmit (event) {
     event.preventDefault();
-    //authenticate user
     axios({
       method: 'post',
       headers: {
@@ -34,6 +37,7 @@ class Login extends React.Component {
         this.props.history.push('/user/'+response.data.user.id);
       });
   }
+  
   render() {
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>

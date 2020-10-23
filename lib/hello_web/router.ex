@@ -13,13 +13,6 @@ defmodule HelloWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", HelloWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
-  end
-
-
   # Other scopes may use custom stacks.
   scope "/api", HelloWeb do
     pipe_through :api
@@ -30,6 +23,12 @@ defmodule HelloWeb.Router do
     get "/user/:user_id/tasks", TaskController, :user_tasks
     delete "/task/:id", TaskController, :delete
     put "/task/:id", TaskController, :update
+  end
+
+  scope "/", HelloWeb do
+    pipe_through :browser
+
+    get "/*path", PageController, :index
   end
 
   # Enables LiveDashboard only for development

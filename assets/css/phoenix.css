@@ -27,6 +27,9 @@ pre{padding: 1em;}
 select {
   width: auto;
 }
+.cpmClass {
+  background-color: #080808;
+}
 
 /* Phoenix promo and logo */
 .phx-hero {

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import classNames from "classnames";
 import { withRouter } from 'react-router-dom';
 
 class Test extends React.Component {
@@ -19,7 +20,15 @@ class Test extends React.Component {
   }
 
   handleUpateTask(event){
-  	this.state.taskUpdates[event.target.id] = event.target.value;
+  	this.state.taskUpdates[event.target.id] = {
+      task: event.target.value
+    }
+  }
+
+  handleCompleteUpdate(event){
+    this.state.taskUpdates[event.target.id] = {
+      completed: event.target.value
+    }
   }
 
   taskRequest (event, request) {
@@ -41,7 +50,7 @@ class Test extends React.Component {
       url: `http://localhost:4000/api/task/${event.currentTarget.id}`,
       data: {
       	task: {
-      		completed: true
+      		completed: event.currentTarget.value
       	}
       }
     }
@@ -63,7 +72,7 @@ class Test extends React.Component {
       url: `http://localhost:4000/api/task/${event.currentTarget.id}`,
       data: {
       	task: {
-      		task: this.state.taskUpdates[event.currentTarget.id]
+      		task: this.state.taskUpdates[event.currentTarget.id]['task']
       	}
       }
     }
@@ -83,6 +92,8 @@ class Test extends React.Component {
 		this.taskRequest(event, request)
   }
 
+
+
   getTasks() {
   	axios.get(`http://localhost:4000/api/user/${this.props.match.params.user_id}/tasks`)
 		  .then(response => {
@@ -101,8 +112,10 @@ class Test extends React.Component {
 
 	render() {
 		var completeStyle = {marginLeft: 30};
+    var completedColor = {padding: 20};
 		return (
-			<div> Welcome {this.props.match.params.user}
+			<div> 
+      Welcome {this.props.match.params.user}
       <form onSubmit={this.handleSubmit.bind(this)}>
         <div className="field">
           <label className="label">New Task</label>
@@ -123,19 +136,23 @@ class Test extends React.Component {
       </form>
 			  {this.state.tasks.map((task, index) => (
           <div key={index}>
-          	<form id = {task.id} onSubmit={this.updateTask.bind(this)}>
+          	<form id = {task.id}>
           	  <div className="control">
 		            <input disabled={task.completed} className="input" type="text" defaultValue={task.task} id={task.id} onChange={this.handleUpateTask.bind(this)}
 		            />
 	          	</div>
-			        <button type="submit" value={task.id} className="button is-primary">
-	       				Save Task
-	        		</button>
-
           	</form>
           	<div>
-          		<button id={task.id} onClick={this.deleteTask.bind(this)} type="delete" value="Delete" className="button is-primary">Delete</button>
-          		<button style={completeStyle} disabled={task.completed} id={task.id} onClick={this.completeTask.bind(this)} type="complete" value="Complete" className="button is-primary">Complete</button>
+              <button id = {task.id} onClick={this.updateTask.bind(this)} type="submit" value={task.id} className="button is-primary">
+                Save Task
+              </button>
+          		<button style={completeStyle} id={task.id} onClick={this.deleteTask.bind(this)} type="delete" value="Delete" className="button is-primary">
+                Delete
+                </button>
+          		<button className={classNames({cpmClass: task.completed})} style={completeStyle} value={!task.completed} id={task.id} onClick={this.completeTask.bind(this)} type="complete">
+                Complete<div>d</div>
+              </button>
+              <div>{task.completed}</div>
           	</div>
           </div>
         ))}
