@@ -1,0 +1,4 @@
+<div class="phx-hero">
+  <h2>Hello World, from <%= @pw %>!</h2>
+ <%#  <x-test-component name=<%= @messenger></x-test-component> %> %>
+</div>
